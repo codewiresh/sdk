@@ -1,0 +1,50 @@
+import { CodewireError } from "./types.js";
+
+export class HttpClient {
+  constructor(
+    private baseUrl: string,
+    private apiKey: string,
+  ) {}
+
+  private headers(): Record<string, string> {
+    return {
+      Authorization: `Bearer ${this.apiKey}`,
+      "Content-Type": "application/json",
+    };
+  }
+
+  async request<T>(method: string, path: string, body?: unknown): Promise<T> {
+    const url = `${this.baseUrl}${path}`;
+    const res = await fetch(url, {
+      method,
+      headers: this.headers(),
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    if (!res.ok) {
+      let detail = res.statusText;
+      try {
+        const err = await res.json();
+        detail = err.detail ?? err.message ?? detail;
+      } catch {
+        // ignore parse errors
+      }
+      throw new CodewireError(res.status, detail);
+    }
+
+    if (res.status === 204) return undefined as T;
+    return res.json() as Promise<T>;
+  }
+
+  get<T>(path: string): Promise<T> {
+    return this.request("GET", path);
+  }
+
+  post<T>(path: string, body?: unknown): Promise<T> {
+    return this.request("POST", path, body);
+  }
+
+  delete<T>(path: string): Promise<T> {
+    return this.request("DELETE", path);
+  }
+}
