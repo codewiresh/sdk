@@ -1,0 +1,8 @@
+package: api
+output: internal/api/types_gen.go
+generate:
+  models: true
+  chi-server: false
+  client: false
+  embedded-spec: false
+  strict-server: false

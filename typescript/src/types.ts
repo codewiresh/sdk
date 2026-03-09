@@ -1,102 +1,40 @@
+import type { components } from "./types.gen.js";
+
+// Re-export generated schema types with friendly names
+export type EnvironmentData = components["schemas"]["Environment"];
+export type TemplateData = components["schemas"]["EnvironmentTemplate"];
+export type APIKeyData = components["schemas"]["APIKey"];
+export type CreateEnvironmentRequest = components["schemas"]["CreateEnvironmentBody"];
+export type CreateTemplateRequest = components["schemas"]["CreateTemplateBody"];
+export type UpdateTemplateRequest = components["schemas"]["UpdateTemplateBody"];
+export type CreateAPIKeyRequest = components["schemas"]["CreateAPIKeyBody"];
+export type CreateAPIKeyResponse = components["schemas"]["CreateAPIKeyResponse"];
+export type ExecRequest = components["schemas"]["ExecBody"];
+export type ExecResult = components["schemas"]["ExecResult"];
+export type FileEntry = components["schemas"]["FileEntry"];
+export type EnvironmentPort = components["schemas"]["EnvironmentPort"];
+export type CreatePortRequest = components["schemas"]["CreatePortBody"];
+export type SecretMetadata = components["schemas"]["SecretMetadata"];
+export type SecretProject = components["schemas"]["SecretProject"];
+export type CreateSecretProjectRequest = components["schemas"]["CreateSecretProjectInputBody"];
+export type SetSecretRequest = components["schemas"]["SetSecretInputBody"];
+export type SetUserSecretRequest = components["schemas"]["SetUserSecretInputBody"];
+export type SetProjectSecretRequest = components["schemas"]["SetProjectSecretInputBody"];
+export type StatusResponse = components["schemas"]["StatusResponse"];
+
 export interface ClientOptions {
   apiKey?: string;
   baseUrl?: string;
   orgId?: string;
 }
 
-export interface CreateEnvironmentRequest {
-  template_id: string;
-  name?: string;
-  cpu_millicores?: number;
-  memory_mb?: number;
-  disk_gb?: number;
-  ttl_seconds?: number;
-  resource_id?: string;
-}
-
-export interface EnvironmentData {
-  id: string;
-  org_id: string;
-  created_by: string;
-  template_id: string;
-  type: "coder" | "sandbox";
-  name?: string;
-  state: string;
-  desired_state: string;
-  error_reason?: string;
-  recoverable: boolean;
-  state_changed_at: string;
-  retry_count: number;
-  ttl_seconds?: number;
-  shutdown_at?: string;
-  cpu_millicores: number;
-  memory_mb: number;
-  disk_gb: number;
-  total_running_seconds: number;
-  created_at: string;
-  started_at?: string;
-  stopped_at?: string;
-  destroyed_at?: string;
-}
-
-export interface TemplateData {
-  id: string;
-  org_id: string;
-  type: "coder" | "sandbox";
-  name: string;
-  description?: string;
-  build_status: string;
-  build_error?: string;
-  default_cpu_millicores: number;
-  default_memory_mb: number;
-  default_disk_gb: number;
-  default_ttl_seconds?: number;
-  created_at: string;
-}
-
-export interface CreateTemplateRequest {
-  type: "coder" | "sandbox";
-  name: string;
-  description?: string;
-  default_cpu_millicores?: number;
-  default_memory_mb?: number;
-  default_disk_gb?: number;
-  default_ttl_seconds?: number;
-}
-
-export interface APIKeyData {
-  id: string;
-  user_id: string;
-  org_id: string;
-  name: string;
-  key_prefix: string;
-  scopes: string[];
-  last_used_at?: string;
-  expires_at?: string;
-  created_at: string;
-}
-
-export interface CreateAPIKeyRequest {
-  name: string;
-  scopes?: string[];
-  expires_in_days?: number;
-}
-
-export interface CreateAPIKeyResponse extends APIKeyData {
-  key: string;
-}
-
 export interface ListEnvironmentsParams {
-  type?: "coder" | "sandbox";
+  type?: string;
   state?: string;
 }
 
 export interface ListTemplatesParams {
-  type?: "coder" | "sandbox";
-}
-
-export interface StatusResponse {
-  status: string;
+  type?: string;
 }
 
 export class CodewireError extends Error {

@@ -8,18 +8,15 @@ import type {
 export class APIKeys {
   constructor(private http: HttpClient) {}
 
-  create(
-    orgId: string,
-    body: CreateAPIKeyRequest,
-  ): Promise<CreateAPIKeyResponse> {
-    return this.http.post(`/organizations/${orgId}/api-keys`, body);
+  create(body: CreateAPIKeyRequest): Promise<CreateAPIKeyResponse> {
+    return this.http.post(this.http.orgPath("/api-keys"), body);
   }
 
-  list(orgId: string): Promise<APIKeyData[]> {
-    return this.http.get(`/organizations/${orgId}/api-keys`);
+  list(): Promise<APIKeyData[]> {
+    return this.http.get(this.http.orgPath("/api-keys"));
   }
 
-  delete(orgId: string, keyId: string): Promise<void> {
-    return this.http.delete(`/organizations/${orgId}/api-keys/${keyId}`);
+  delete(keyId: string): Promise<void> {
+    return this.http.delete(this.http.orgPath(`/api-keys/${keyId}`));
   }
 }

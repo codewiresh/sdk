@@ -20,6 +20,12 @@ python/*.egg-info/
 .DS_Store
 Thumbs.db
 
+# Generated
+openapi-sdk.json
+go/internal/api/types_gen.go
+typescript/src/types.gen.ts
+python/codewire/models.py
+
 # Environment
 .env
 .env.local
